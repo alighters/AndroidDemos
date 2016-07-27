@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AndroidDemos</string>
+
+    <string name="anim_screen_compat">Screen Anim</string>
+</resources>
