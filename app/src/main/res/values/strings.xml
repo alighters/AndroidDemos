@@ -2,4 +2,5 @@
     <string name="app_name">AndroidDemos</string>
 
     <string name="anim_screen_compat">Screen Anim</string>
+    <string name="jni_test">Jni Test</string>
 </resources>

@@ -19,6 +19,8 @@
         <activity
             android:name=".anim.SecondActivity"
             android:theme="@style/TranslucentTheme"/>
+
+        <activity android:name=".jni.JniTestActivity"/>
     </application>
 
 </manifest>
