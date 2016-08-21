@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-package com.lighters.demos.app.base;
+package com.lighters.demos.token.http.api;
 
-import android.app.Application;
-import android.content.Context;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by david on 16/7/27.
+ * Created by david on 16/8/21.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public class BaseApplication extends Application {
+public class ApiModel<T> {
 
-    private static Context mContext;
+    public boolean success;
+    @SerializedName("error_code") public int errorCode;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mContext = this;
-    }
-
-
-    public static Context getContext(){
-        return mContext;
-    }
+    public T data;
 }

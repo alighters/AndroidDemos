@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lighters.demos">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +23,8 @@
             android:theme="@style/TranslucentTheme"/>
 
         <activity android:name=".jni.JniTestActivity"/>
+
+        <activity android:name=".token.TokenTestActivity"/>
     </application>
 
 </manifest>

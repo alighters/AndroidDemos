@@ -3,4 +3,9 @@
 
     <string name="anim_screen_compat">Screen Anim</string>
     <string name="jni_test">Jni Test</string>
+
+    <!-- token test -->
+    <string name="token_test">Token Test</string>
+    <string name="get_token">Get the token</string>
+    <string name="request_api">Request the api</string>
 </resources>

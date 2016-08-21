@@ -26,4 +26,12 @@
         android:gravity="center"
         android:text="@string/jni_test"
         android:textSize="@dimen/font_size_16"/>
+
+    <Button
+        android:id="@+id/btn_token_test"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_normal_height"
+        android:gravity="center"
+        android:text="@string/token_test"
+        android:textSize="@dimen/font_size_16"/>
 </LinearLayout>

@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-package com.lighters.demos.app.base;
-
-import android.app.Application;
-import android.content.Context;
+package com.lighters.demos.token.http.api;
 
 /**
- * Created by david on 16/7/27.
+ * Created by david on 16/8/20.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public class BaseApplication extends Application {
+public class ResultModel {
 
-    private static Context mContext;
+    /**
+     * result : false
+     */
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mContext = this;
-    }
-
-
-    public static Context getContext(){
-        return mContext;
-    }
+    public boolean result;
 }

@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-package com.lighters.demos.app.base;
+package com.lighters.demos.token.http.api;
 
-import android.app.Application;
-import android.content.Context;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+import rx.Observable;
 
 /**
- * Created by david on 16/7/27.
+ * Created by david on 16/8/20.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public class BaseApplication extends Application {
+public interface IApiService {
 
-    private static Context mContext;
+    @GET("get_token")
+    Observable<TokenModel> getToken();
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mContext = this;
-    }
+    @GET("refresh_token")
+    Observable<TokenModel> refreshToken();
 
-
-    public static Context getContext(){
-        return mContext;
-    }
+    @GET("request")
+    Observable<ResultModel> getResult(@Query("token") String token);
 }

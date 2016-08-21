@@ -6,6 +6,7 @@ import butterknife.OnClick;
 import com.lighters.demos.anim.FirstActivity;
 import com.lighters.demos.app.base.BaseActivity;
 import com.lighters.demos.jni.JniTestActivity;
+import com.lighters.demos.token.TokenTestActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -32,5 +33,10 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_jni_test)
     void gotoJniTest() {
         startActivity(new Intent(this, JniTestActivity.class));
+    }
+
+    @OnClick(R.id.btn_token_test)
+    void gotoTokenTest() {
+        startActivity(new Intent(this, TokenTestActivity.class));
     }
 }
