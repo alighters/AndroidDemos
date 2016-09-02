@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-package com.lighters.demos.app.base;
+package com.lighters.robolectric;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import butterknife.ButterKnife;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
- * Created by david on 16/7/27.
+ * Created by david on 16/8/29.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public abstract class BaseActivity extends Activity {
+public class TestMainActivity extends Activity {
+
+    private Button mBtnMain;
+    private TextView mTvMain;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        ButterKnife.bind(this);
-        setView(savedInstanceState);
-        initData();
+        setContentView(R.layout.test_main_layout);
+        mBtnMain = (Button) findViewById(R.id.btn_test_main);
+        mTvMain = (TextView) findViewById(R.id.tv_test_main);
+        mBtnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTvMain.setText("Hello");
+            }
+        });
     }
-
-    @LayoutRes
-    protected abstract int getLayoutId();
-
-    protected abstract void setView(Bundle savedInstanceState);
-
-    protected abstract void initData();
 }
