@@ -16,30 +16,48 @@
 
 package lighters.mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.exceptions.verification.NoInteractionsWanted;
+import org.mockito.internal.verification.api.VerificationData;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.mockito.verification.Timeout;
+import org.mockito.verification.VerificationMode;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.description;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -307,11 +325,12 @@ public class MockTest {
     }
 
     @Test
-    public void testArgumentMatcher(){
+    public void testArgumentMatcher() {
         class ListOfTwoElements implements ArgumentMatcher<List> {
             public boolean matches(List list) {
                 return list.size() == 2;
             }
+
             public String toString() {
                 //printed in verification errors
                 return "[list of 2 elements]";
@@ -324,8 +343,171 @@ public class MockTest {
 
         mock.addAll(Arrays.asList("one", "two"));
 
-        //verify(mock).addAll(argThat(new ListOfTwoElements()));
-
-        verify(mock).addAll(argThat(list -> list.size() == 2));
+        verify(mock).addAll(argThat(new ListOfTwoElements()));
     }
+
+    @Test
+    public void testPartialRealMock1() {
+        //you can create partial mock with spy() method:
+        LinkedList linkedList = new LinkedList();
+        linkedList.addFirst(1);
+
+        List list = spy(linkedList);
+
+        assertThat(list.get(0), is(1));
+    }
+
+    @Rule public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void testPartialRealMock2() {
+        //you can enable partial mock capabilities selectively on mocks:
+        List mock = mock(LinkedList.class);
+        //Be sure the real implementation is 'safe'.
+        //If real implementation throws exceptions or depends on specific state of the object then you're in trouble.
+
+        when(mock.get(anyInt())).thenCallRealMethod();
+
+        thrown.expect(Exception.class);
+
+        mock.get(0);
+    }
+
+    @Test
+    public void testResetMock() {
+        List mock = mock(List.class);
+        when(mock.size()).thenReturn(10);
+        mock.add(1);
+        reset(mock);
+        assertThat(mock.size(), is(0));
+    }
+
+    @Test
+    public void testTimeout() {
+        List mock = mock(List.class);
+
+        when(mock.get(0)).thenReturn(1);
+
+        System.out.println(mock.get(0));
+
+        verify(mock, timeout(100)).get(0);
+        //above is an alias to:
+        verify(mock, timeout(100).times(1)).get(0);
+
+        System.out.println(mock.get(0));
+
+        verify(mock, timeout(100).times(2)).get(0);
+
+        verify(mock, timeout(100).atLeast(2)).get(0);
+
+        verify(mock, new Timeout(100, new VerificationMode() {
+            @Override
+            public void verify(VerificationData data) {
+                Assume.assumeNotNull(data);
+            }
+
+            @Override
+            public VerificationMode description(String description) {
+                return null;
+            }
+        })).get(0);
+    }
+
+    @Spy ArrayList list1;
+    @InjectMocks ArrayList list2;
+
+    @Test
+    public void testMocksInit() {
+        MockitoAnnotations.initMocks(this);
+        Assert.assertNotNull(list1);
+        Assert.assertNotNull(list2);
+    }
+
+    @Test
+    public void testWriteInOneLine() {
+        List list = when(mock(List.class).subList(0, 10)).thenReturn(new ArrayList()).getMock();
+    }
+
+    @Test
+    public void testIgnoreStubs1() {
+
+        //mocking lists for the sake of the example (if you mock List in real you will burn in hell)
+        List mock1 = mock(List.class), mock2 = mock(List.class);
+
+        //stubbing mocks:
+        when(mock1.get(0)).thenReturn(10);
+        when(mock2.get(0)).thenReturn(20);
+
+        //using mocks by calling stubbed get(0) methods:
+        //System.out.println(mock1.get(0)); //prints 10
+        System.out.println(mock2.get(0)); //prints 20
+
+        mock1.get(0);
+        verify(mock1).get(0);
+
+        //using mocks by calling clear() methods:
+        mock1.clear();
+        mock2.clear();
+
+        //verification:
+        verify(mock1).clear();
+        verify(mock2).clear();
+
+
+
+        //verifyNoMoreInteractions() fails because get() methods were not accounted for.
+        try {
+            verifyNoMoreInteractions(mock1, mock2);
+        } catch (NoInteractionsWanted e) {
+            System.out.println(e);
+        }
+
+        //However, if we ignore stubbed methods then we can verifyNoMoreInteractions()
+        verifyNoMoreInteractions(ignoreStubs(mock1, mock2));
+
+
+        //Remember that ignoreStubs() *changes* the input mocks and returns them for convenience.
+    }
+
+    @Test
+    public void testIgnoreStubs2() {
+
+        List list = mock(List.class);
+        when(list.get(0)).thenReturn("foo");
+
+        list.add(0);
+        System.out.println(list.get(0)); //we don't want to verify this
+        list.clear();
+
+        //verify(list).add(0);
+        //verify(list).add(0);
+        //verify(list).clear();
+
+
+        // Same as: InOrder inOrder = inOrder(list);
+        InOrder inOrder = inOrder(ignoreStubs(list));
+
+        inOrder.verify(list).add(0);
+        // this will have an error..
+        //inOrder.verify(list).get(0);
+        inOrder.verify(list).clear();
+        inOrder.verifyNoMoreInteractions();
+
+    }
+
+    @Test
+    public void testMockDetails() {
+        List list = mock(List.class);
+        assertThat(Mockito.mockingDetails(list).isMock(), is(true));
+        assertThat(Mockito.mockingDetails(list).isSpy(), is(false));
+    }
+
+    @Test
+    public void testCustomMessage(){
+        List list = mock(List.class);
+        when(list.get(0)).thenReturn(1);
+        verify(list, description("should print the get(0) result")).get(0);
+    }
+
+
 }

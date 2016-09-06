@@ -25,6 +25,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
     }
 
     compileOptions {
@@ -44,5 +45,4 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.1.0-beta.119'
-    compile 'com.android.support:appcompat-v7:24.2.0'
 }
