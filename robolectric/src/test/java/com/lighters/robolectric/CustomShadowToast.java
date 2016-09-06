@@ -16,12 +16,30 @@
 
 package com.lighters.robolectric;
 
-import android.app.Activity;
+import android.content.Context;
+import android.widget.Toast;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 
 /**
- * Created by david on 16/8/31.
+ * Created by david on 16/9/6.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public class TestFirstActivity extends Activity {
+@Implements(Toast.class)
+public class CustomShadowToast {
+
+    private static boolean mIsShown;
+
+    public void __constructor__(Context context) {
+    }
+
+    @Implementation
+    public void show() {
+        mIsShown = true;
+    }
+
+    public static boolean isToastShowInvoked() {
+        return mIsShown;
+    }
 }

@@ -17,43 +17,32 @@
 package com.lighters.robolectric;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.widget.Button;
-import android.widget.TextView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by david on 16/8/29.
+ * Created by david on 16/9/6.
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
-public class RobolectricTestMainActivity {
+@Config(constants = BuildConfig.class, sdk = 21, shadows = { CustomShadowToast.class })
+public class CustomShadowTest {
 
     @Test
-    public void test() {
-        Activity activity = Robolectric.setupActivity(TestMainActivity.class);
-
-        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+    public void testToast() {
+        Activity activity = Robolectric.setupActivity(TestToastActivity.class);
 
         Button button = (Button) activity.findViewById(R.id.btn_test_main);
-        TextView textView = (TextView) activity.findViewById(R.id.tv_test_main);
-
         button.performClick();
-        assertThat(textView.getText().toString(), equalTo("Hello"));
 
-        Intent intent = new Intent(activity, TestToastActivity.class);
-        activity.startActivity(intent);
-        assertThat(shadowActivity.getNextStartedActivity(), equalTo(intent));
+        assertThat(CustomShadowToast.isToastShowInvoked(), is(true));
     }
 }
