@@ -22,10 +22,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Created by david on 16/9/6.
@@ -44,5 +46,6 @@ public class CustomShadowTest {
         button.performClick();
 
         assertThat(CustomShadowToast.isToastShowInvoked(), is(true));
+        assertThat(shadowOf(RuntimeEnvironment.application).getShownToasts().size() == 0, is(true));
     }
 }
