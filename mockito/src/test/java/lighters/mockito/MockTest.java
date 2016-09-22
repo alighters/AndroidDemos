@@ -34,6 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.exceptions.verification.NoInteractionsWanted;
+import org.mockito.internal.matchers.Any;
 import org.mockito.internal.verification.api.VerificationData;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -43,6 +44,7 @@ import org.mockito.verification.VerificationMode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeast;
@@ -82,6 +84,7 @@ public class MockTest {
         //verification
         verify(mockedList).clear();
         verify(mockedList).add("one");
+
     }
 
     @Test
@@ -94,7 +97,7 @@ public class MockTest {
         //when(mockedList.get(1)).thenThrow(new RuntimeException());
         //
         ////following prints "first"
-        //System.out.println(mockedList.get(0));
+        System.out.println(mockedList.get(0));
         //
         ////following throws runtime exception
         //System.out.println(mockedList.get(1));
@@ -105,11 +108,15 @@ public class MockTest {
         //Although it is possible to verify a stubbed invocation, usually it's just redundant
         //If your code cares what get(0) returns, then something else breaks (often even before verify() gets executed).
         //If your code doesn't care what get(0) returns, then it should not be stubbed. Not convinced? See here.
-        verify(mockedList).get(1);
+        verify(mockedList).get(0);
     }
 
     @Test
     public void testArgumentMatchers() {
+
+        Map map = mock(Map.class);
+        when(map.get(anyObject())).thenReturn("xiba");
+        System.out.println(map.get("1"));
 
         LinkedList mockedList = mock(LinkedList.class);
         //stubbing using built-in anyInt() argument matcher
@@ -233,6 +240,8 @@ public class MockTest {
 
         //following verification will fail
         verifyNoMoreInteractions(mockedList);
+
+
     }
 
     @Test
@@ -289,6 +298,12 @@ public class MockTest {
 
         //optionally, you can stub out some methods:
         when(sypList.size()).thenReturn(100);
+
+        LinkedList mock = mock(LinkedList.class);
+        when(mock.add(anyInt())).thenCallRealMethod();
+        when(mock.get(anyInt())).thenCallRealMethod();
+        mock.add(1);
+        System.out.println(mock.get(0));
 
         //using the spy calls *real* methods
         sypList.add("one");
@@ -352,9 +367,12 @@ public class MockTest {
         LinkedList linkedList = new LinkedList();
         linkedList.addFirst(1);
 
-        List list = spy(linkedList);
+        LinkedList list = spy(linkedList);
+        list.add(2);
+        verify(list).add(2);
 
         assertThat(list.get(0), is(1));
+        assertThat(list.get(1), is(2));
     }
 
     @Rule public ExpectedException thrown = ExpectedException.none();
@@ -369,7 +387,8 @@ public class MockTest {
         when(mock.get(anyInt())).thenCallRealMethod();
 
         thrown.expect(Exception.class);
-
+        mock.get(0);
+        System.out.println("hahah");
         mock.get(0);
     }
 

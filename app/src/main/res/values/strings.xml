@@ -8,4 +8,7 @@
     <string name="token_test">Token Test</string>
     <string name="get_token">Get the token</string>
     <string name="request_api">Request the api</string>
+
+    <!-- service test -->
+    <string name="intent_service_test">IntentService Test</string>
 </resources>

@@ -25,6 +25,9 @@
         <activity android:name=".jni.JniTestActivity"/>
 
         <activity android:name=".token.TokenTestActivity"/>
+        <activity android:name=".service.test.TestIntentActivity"/>
+
+        <service android:name=".service.test.TestIntentService"/>
     </application>
 
 </manifest>
