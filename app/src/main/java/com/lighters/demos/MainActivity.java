@@ -2,6 +2,7 @@ package com.lighters.demos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import butterknife.OnClick;
 import com.lighters.demos.anim.FirstActivity;
 import com.lighters.demos.app.base.BaseActivity;
@@ -44,5 +45,10 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_intent_service_test)
     void gotoIntentServiceTest() {
         startActivity(new Intent(this, TestIntentActivity.class));
+    }
+
+    @OnClick(R.id.btn_instant_run_hot_test)
+    void testInstantRunHotMode() {
+        Toast.makeText(this, "Instant Run Test", Toast.LENGTH_SHORT).show();
     }
 }

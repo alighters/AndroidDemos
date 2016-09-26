@@ -11,4 +11,7 @@
 
     <!-- service test -->
     <string name="intent_service_test">IntentService Test</string>
+
+    <!-- instant run test -->
+    <string name="instant_run_hot_test">Instant Run Hot Test</string>
 </resources>
