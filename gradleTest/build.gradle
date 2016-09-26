@@ -1,0 +1,64 @@
+apply plugin: GreetingPlugin
+
+class GreetingPlugin implements Plugin<Project> {
+    void apply(Project project) {
+        project.task('hello') << {
+            println "Hello from the GreetingPlugin"
+        }
+
+        // Add the 'greeting' extension object
+        project.extensions.create("greeting", GreetingPluginExtension1)
+        // Add a task that uses the configuration
+        project.task('hello1') << {
+            println project.greeting.message
+        }
+
+        project.task('hello2') << {
+            println "${project.greeting.message} from ${project.greeting.greeter}"
+        }
+    }
+}
+
+class GreetingPluginExtension {
+    def String message = 'Hello from GreetingPlugin1'
+}
+
+
+greeting {
+    message = 'Hi'
+    greeter = 'Gradle'
+}
+
+
+
+class GreetingPluginExtension1 {
+    String message
+    String greeter
+}
+
+
+class GreetingToFileTask extends DefaultTask {
+
+    def destination
+
+    File getDestination() {
+        project.file(destination)
+    }
+
+    @TaskAction
+    def greet() {
+        def file = getDestination()
+        file.parentFile.mkdirs()
+        file.write "Hello!"
+    }
+}
+
+task greet(type: GreetingToFileTask) {
+    destination = { project.greetingFile }
+}
+
+task sayGreeting(dependsOn: greet) << {
+    println file(greetingFile).text
+}
+
+ext.greetingFile = "$buildDir/hello.txt"
