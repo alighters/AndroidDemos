@@ -57,8 +57,26 @@ task greet(type: GreetingToFileTask) {
     destination = { project.greetingFile }
 }
 
+task doLast1() << {
+    println(" do last ... ")
+}
+
 task sayGreeting(dependsOn: greet) << {
     println file(greetingFile).text
+    println getRootDir()
+
+    doLast {
+        println("do last111")
+    }
 }
+
+sayGreeting.doLast {
+    println(" do last ... ")
+}
+
+doLast1
+
+
+
 
 ext.greetingFile = "$buildDir/hello.txt"

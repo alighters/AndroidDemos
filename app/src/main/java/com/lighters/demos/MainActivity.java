@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_instant_run_hot_test)
     void testInstantRunHotMode() {
-        Toast.makeText(this, "Instant Run Test", Toast.LENGTH_SHORT).show();
+        String abc = "Instant Run Test224";
+        Toast.makeText(this, abc, Toast.LENGTH_SHORT).show();
     }
 }
