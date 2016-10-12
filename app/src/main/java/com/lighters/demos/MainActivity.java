@@ -7,6 +7,7 @@ import butterknife.OnClick;
 import com.lighters.demos.anim.FirstActivity;
 import com.lighters.demos.app.base.BaseActivity;
 import com.lighters.demos.jni.JniTestActivity;
+import com.lighters.demos.reactnative.ToastRnActivity;
 import com.lighters.demos.service.test.TestIntentActivity;
 import com.lighters.demos.token.TokenTestActivity;
 
@@ -51,5 +52,10 @@ public class MainActivity extends BaseActivity {
     void testInstantRunHotMode() {
         String abc = "Instant Run Test224";
         Toast.makeText(this, abc, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.btn_rn_test)
+    void testReactNativeInvoke() {
+        startActivity(new Intent(this, ToastRnActivity.class));
     }
 }

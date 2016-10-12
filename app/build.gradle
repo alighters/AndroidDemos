@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.lighters.demos"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 16
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -29,7 +29,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     // view
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
 
 
     compile 'com.jakewharton:butterknife:8.2.1'
@@ -42,6 +42,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.5'
     compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
+
+    compile "com.facebook.react:react-native:+"
 
     // test
     testCompile 'junit:junit:4.12'

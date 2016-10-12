@@ -50,3 +50,9 @@ pom.xml.*
 
 # VIM
 *.swp
+
+
+# React Native
+node_modules
+.flowconfig
+*.log

@@ -14,4 +14,7 @@
 
     <!-- instant run test -->
     <string name="instant_run_hot_test">Instant Run Hot Test</string>
+
+    <!-- react native test -->
+    <string name="react_native_test">React Native Test</string>
 </resources>
