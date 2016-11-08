@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import butterknife.OnClick;
+import com.lighters.demos.aidl.LocalClientActivity;
 import com.lighters.demos.anim.FirstActivity;
 import com.lighters.demos.app.base.BaseActivity;
 import com.lighters.demos.jni.JniTestActivity;
@@ -57,5 +58,10 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_rn_test)
     void testReactNativeInvoke() {
         startActivity(new Intent(this, ToastRnActivity.class));
+    }
+
+    @OnClick(R.id.btn_aidl_test)
+    void testAidl() {
+        startActivity(new Intent(this, LocalClientActivity.class));
     }
 }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AndroidDemos</string>
 
+    <!-- common string -->
+    <string name="common_send">send</string>
+
     <string name="anim_screen_compat">Screen Anim</string>
     <string name="jni_test">Jni Test</string>
 
@@ -17,4 +20,9 @@
 
     <!-- react native test -->
     <string name="react_native_test">React Native Test</string>
+
+    <!-- aidl test -->
+    <string name="aidl_test">AIDL Test</string>
+
+
 </resources>

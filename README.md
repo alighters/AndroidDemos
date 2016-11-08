@@ -2,7 +2,7 @@
 记录一些 Android 的简单测试Demo 以及实现。
 
 ## SCREEN ANIM
-desc: 界面之前切换动画的原理实现测试。
+desc: 界面( Activity )之前切换动画的原理实现测试。
 
 对应代码为：anim 包。
 
@@ -24,7 +24,7 @@ desc: 实现 APP 请求的 token 的自动刷新
 
 启动： 需要在 server 文件夹下, 执行 `node refresh_token.js`, 用来启动本地服务。
 
-## INTENTSERVICE TEsT
+## INTENTSERVICE TEST
 desc: 测试当使用 IntentService 启动一个耗时的任务，通过 Service 的 stop 方法，并不会将这个耗时的任务也终止掉。
 
 对应代码： service.test 包下
@@ -38,6 +38,13 @@ desc: 当开启 Instant Run 时，对一个方法内部的实现做简单的修�
 desc: 将当前项目集成 React Native 内容，并使用 NativeModule 来测试对 native 代码的调用。
 
 代码: reactnative 包
+
+启动： 需要在根目录下，执行 `npm install `, `npm start` 命令。
+
+## AIDL TEST
+desc: 测试 aidl 的使用
+
+代码： aidl 包
 
 
 

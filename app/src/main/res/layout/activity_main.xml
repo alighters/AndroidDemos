@@ -58,4 +58,11 @@
         android:gravity="center"
         android:text="@string/react_native_test"
         android:textSize="@dimen/font_size_16"/>
+    <Button
+        android:id="@+id/btn_aidl_test"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_normal_height"
+        android:gravity="center"
+        android:text="@string/aidl_test"
+        android:textSize="@dimen/font_size_16"/>
 </LinearLayout>
