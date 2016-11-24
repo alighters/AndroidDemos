@@ -19,6 +19,7 @@ package com.lighters.demos.token.http.converter;
 import com.google.gson.TypeAdapter;
 import com.lighters.demos.token.http.api.ApiModel;
 import com.lighters.demos.token.http.api.ErrorCode;
+import com.lighters.demos.token.http.exception.ApiException;
 import com.lighters.demos.token.http.exception.TokenInvalidException;
 import com.lighters.demos.token.http.exception.TokenNotExistException;
 import java.io.IOException;
@@ -42,8 +43,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, Obje
             } else if (apiModel.errorCode == ErrorCode.TOKEN_INVALID) {
                 throw new TokenInvalidException();
             } else if (!apiModel.success) {
-                // TODO: 16/8/21 handle the other error.
-                return null;
+                // 特定 API 的错误，在相应的 Subscriber 的 onError 的方法中进行处理
+                throw new ApiException();
             } else if (apiModel.success) {
                 return apiModel.data;
             }

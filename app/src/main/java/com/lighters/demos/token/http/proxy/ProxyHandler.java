@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.lighters.demos.app.base.BaseApplication;
 import com.lighters.demos.token.http.GlobalToken;
+import com.lighters.demos.token.http.IGlobalManager;
 import com.lighters.demos.token.http.RetrofitUtil;
 import com.lighters.demos.token.http.api.IApiService;
 import com.lighters.demos.token.http.api.TokenModel;
@@ -53,9 +54,11 @@ public class ProxyHandler implements InvocationHandler {
     private boolean mIsTokenNeedRefresh;
 
     private Object mProxyObject;
+    private IGlobalManager mGlobalManager;
 
-    public ProxyHandler(Object proxyObject) {
+    public ProxyHandler(Object proxyObject, IGlobalManager globalManager) {
         mProxyObject = proxyObject;
+        mGlobalManager = globalManager;
     }
 
     @Override
@@ -86,7 +89,9 @@ public class ProxyHandler implements InvocationHandler {
                         if (throwable instanceof TokenInvalidException) {
                             return refreshTokenWhenTokenInvalid();
                         } else if (throwable instanceof TokenNotExistException) {
-                            Toast.makeText(BaseApplication.getContext(), "Token is not existed!!", Toast.LENGTH_SHORT).show();
+                            // Token 不存在，执行退出登录的操作。（为了防止多个请求，都出现 Token 不存在的问题，
+                            // 这里需要取消当前所有的网络请求）
+                            mGlobalManager.exitLogin();
                             return Observable.error(throwable);
                         }
                         return Observable.error(throwable);
@@ -141,6 +146,9 @@ public class ProxyHandler implements InvocationHandler {
 
     /**
      * Update the token of the args in the method.
+     *
+     * PS： 因为这里使用的是 GET 请求，所以这里就需要对 Query 的参数名称为 token 的方法。
+     * 若是 POST 请求，或者使用 Body ，自行替换。因为 参数数组已经知道，进行遍历找到相应的值，进行替换即可（更新为新的 token 值）。
      */
     private void updateMethodToken(Method method, Object[] args) {
         if (mIsTokenNeedRefresh && !TextUtils.isEmpty(GlobalToken.getToken())) {

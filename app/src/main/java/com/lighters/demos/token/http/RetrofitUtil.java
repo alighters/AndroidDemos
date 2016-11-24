@@ -16,6 +16,12 @@
 
 package com.lighters.demos.token.http;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
+import com.lighters.demos.MainActivity;
+import com.lighters.demos.app.base.BaseApplication;
 import com.lighters.demos.token.http.converter.GsonConverterFactory;
 import com.lighters.demos.token.http.proxy.ProxyHandler;
 import java.lang.reflect.Proxy;
@@ -29,11 +35,12 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  * Email: huangdiv5@gmail.com
  * GitHub: https://github.com/alighters
  */
-public class RetrofitUtil {
+public class RetrofitUtil implements IGlobalManager {
 
     public static final String API = "http://192.168.56.1:8888/";
 
     private static Retrofit sRetrofit;
+    private static OkHttpClient sOkHttpClient;
     private static RetrofitUtil instance;
 
     private final static Object mRetrofitLock = new Object();
@@ -47,7 +54,8 @@ public class RetrofitUtil {
                     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                     clientBuilder.addInterceptor(httpLoggingInterceptor);
-                    sRetrofit = new Retrofit.Builder().client(clientBuilder.build())
+                    sOkHttpClient = clientBuilder.build();
+                    sRetrofit = new Retrofit.Builder().client(sOkHttpClient)
                         .baseUrl(API)
                         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                         .addConverterFactory(GsonConverterFactory.create())
@@ -76,6 +84,23 @@ public class RetrofitUtil {
     @SuppressWarnings("unchecked")
     public <T> T getProxy(Class<T> tClass) {
         T t = getRetrofit().create(tClass);
-        return (T) Proxy.newProxyInstance(tClass.getClassLoader(), new Class<?>[] { tClass }, new ProxyHandler(t));
+        return (T) Proxy.newProxyInstance(tClass.getClassLoader(), new Class<?>[] { tClass }, new ProxyHandler(t, this));
+    }
+
+    @Override
+    public void exitLogin() {
+        // Cancel all the netWorkRequest
+        sOkHttpClient.dispatcher().cancelAll();
+
+        // Goto the home page
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(BaseApplication.getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                BaseApplication.getContext().startActivity(intent);
+                Toast.makeText(BaseApplication.getContext(), "Token is not existed!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
