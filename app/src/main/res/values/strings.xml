@@ -24,5 +24,8 @@
     <!-- aidl test -->
     <string name="aidl_test">AIDL Test</string>
 
+    <!-- canvas cover test -->
+    <string name="canvas_cover_test">CANVAS COVER Test</string>
+
 
 </resources>

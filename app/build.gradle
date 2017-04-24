@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.lighters.demos"
@@ -19,7 +19,7 @@ android {
         }
     }
     sourceSets.main {
-//        jniLibs.srcDirs = ['src/main/libs'] // <-- Set your folder here!
+        //        jniLibs.srcDirs = ['src/main/libs'] // <-- Set your folder here!
     }
 
     compileOptions.incremental = true

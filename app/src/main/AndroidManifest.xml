@@ -20,10 +20,10 @@
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 
     <application
+        android:name=".app.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".app.base.BaseApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -37,9 +37,7 @@
         <activity
             android:name=".anim.SecondActivity"
             android:theme="@style/TranslucentTheme"/>
-
         <activity android:name=".jni.JniTestActivity"/>
-
         <activity android:name=".token.TokenTestActivity"/>
         <activity android:name=".service.test.TestIntentActivity"/>
 
@@ -49,10 +47,10 @@
             android:name=".reactnative.ToastRnActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
-
         <activity android:name=".aidl.LocalClientActivity"/>
+
         <service
-            android:name="com.lighters.demos.aidl.RemoteService"
+            android:name=".aidl.RemoteService"
             android:exported="true"
             android:process=":remote">
             <intent-filter>
@@ -60,6 +58,8 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".canvas.conver.CanvasCoverActivity">
+        </activity>
     </application>
 
 </manifest>

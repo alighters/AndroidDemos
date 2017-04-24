@@ -7,6 +7,7 @@ import butterknife.OnClick;
 import com.lighters.demos.aidl.LocalClientActivity;
 import com.lighters.demos.anim.FirstActivity;
 import com.lighters.demos.app.base.BaseActivity;
+import com.lighters.demos.canvas.conver.CanvasCoverActivity;
 import com.lighters.demos.jni.JniTestActivity;
 import com.lighters.demos.reactnative.ToastRnActivity;
 import com.lighters.demos.service.test.TestIntentActivity;
@@ -63,5 +64,10 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_aidl_test)
     void testAidl() {
         startActivity(new Intent(this, LocalClientActivity.class));
+    }
+
+    @OnClick(R.id.btn_canvas_cover_test)
+    void testCanvasCoverTest() {
+        startActivity(new Intent(this, CanvasCoverActivity.class));
     }
 }
